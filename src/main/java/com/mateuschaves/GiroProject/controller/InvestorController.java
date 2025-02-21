@@ -26,9 +26,12 @@ public class InvestorController {
     }
 
     @PostMapping
-    public ResponseEntity<Investor> createInvestor(@RequestBody Investor investor) {
+    public ResponseEntity<Investor> createInvestor(@RequestBody Investor investor){
+        if(investorRepository.existsByEmail(investor.getEmail())){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Investor savedInvestor = investorRepository.save(investor);
-        return new ResponseEntity<>(savedInvestor, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedInvestor.HttpStatus.CREATED);
     }
 
 
@@ -43,7 +46,6 @@ public class InvestorController {
 
             return new ResponseEntity<>(investor, HttpStatus.OK);
         }
-
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -53,7 +55,6 @@ public class InvestorController {
             investorRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

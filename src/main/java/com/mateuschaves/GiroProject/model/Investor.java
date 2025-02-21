@@ -18,7 +18,6 @@ public class Investor {
     public Investor() {
     }
 
-
     public Long getId() {
         return id;
     }
