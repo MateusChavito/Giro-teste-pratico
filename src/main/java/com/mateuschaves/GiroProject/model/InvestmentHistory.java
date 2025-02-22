@@ -3,6 +3,8 @@ package com.mateuschaves.GiroProject.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class InvestmentHistory {
 
@@ -10,10 +12,10 @@ public class InvestmentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private float initialAmount;
+    private BigDecimal initialAmount;
     private int months;
-    private float interestRate;
-    private float finalAmount;
+    private BigDecimal interestRate;
+    private BigDecimal finalAmount;
 
     @ManyToOne
     @JoinColumn(name = "currency_id", nullable = false)
@@ -34,11 +36,11 @@ public class InvestmentHistory {
         this.id = id;
     }
 
-    public float getInitialAmount() {
+    public BigDecimal getInitialAmount() {
         return initialAmount;
     }
 
-    public void setInitialAmount(float initialAmount) {
+    public void setInitialAmount(BigDecimal initialAmount) {
         this.initialAmount = initialAmount;
     }
 
@@ -50,19 +52,19 @@ public class InvestmentHistory {
         this.months = months;
     }
 
-    public float getInterestRate() {
+    public BigDecimal getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(float interestRate) {
+    public void setInterestRate(BigDecimal interestRate) {
         this.interestRate = interestRate;
     }
 
-    public float getFinalAmount() {
+    public BigDecimal getFinalAmount() {
         return finalAmount;
     }
 
-    public void setFinalAmount(float finalAmount) {
+    public void setFinalAmount(BigDecimal finalAmount) {
         this.finalAmount = finalAmount;
     }
 
@@ -82,7 +84,7 @@ public class InvestmentHistory {
         this.investor = investor;
     }
 
-    public InvestmentHistory(Investor investor, Currency currency, float finalAmount, float interestRate, int months, float initialAmount) {
+    public InvestmentHistory(Investor investor, Currency currency, BigDecimal finalAmount,BigDecimal interestRate, int months,BigDecimal initialAmount) {
         this.investor = investor;
         this.currency = currency;
         this.finalAmount = finalAmount;

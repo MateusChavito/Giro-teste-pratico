@@ -3,6 +3,7 @@ package com.mateuschaves.GiroProject.controller;
 
 import com.mateuschaves.GiroProject.model.InvestmentHistory;
 import com.mateuschaves.GiroProject.repository.InvestmentHistoryRepository;
+import com.mateuschaves.GiroProject.service.InvestmentHistoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,51 +12,30 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/investments")
+@RequestMapping("/api/investment-history")
 public class InvestmentHistoryController {
 
-    private final InvestmentHistoryRepository investmentHistoryRepository;
+    private final InvestmentHistoryService investmentHistoryService;
 
-    public InvestmentHistoryController(InvestmentHistoryRepository investmentHistoryRepository) {
-        this.investmentHistoryRepository = investmentHistoryRepository;
-    }
-
-    @GetMapping
-    public List<InvestmentHistory> getAllInvestmentHistories(){
-        return investmentHistoryRepository.findAll();
-
+    public InvestmentHistoryController(InvestmentHistoryService investmentHistoryService) {
+        this.investmentHistoryService = investmentHistoryService;
     }
 
     @PostMapping
-    public ResponseEntity<InvestmentHistory> createInvestmentHistory(@RequestBody InvestmentHistory investmentHistory){
-        InvestmentHistory savedInvestmentHistory = investmentHistoryRepository.save(investmentHistory);
-        return new ResponseEntity<>(savedInvestmentHistory, HttpStatus.CREATED);
+    public ResponseEntity<InvestmentHistory> createInvestmentHistory(@RequestBody InvestmentHistory investmentHistory) {
+        InvestmentHistory createdInvestmentHistory = investmentHistoryService.createInvestmentHistory(investmentHistory);
+        return new ResponseEntity<>(createdInvestmentHistory, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<InvestmentHistory>updateInvestmentHistory(@PathVariable Long id, @RequestBody InvestmentHistory investmentDetails){
-        Optional<InvestmentHistory> investmentHistoryOptional = investmentHistoryRepository.findById(id);
-        if(investmentHistoryOptional.isPresent()){
-            InvestmentHistory investmentHistory = investmentHistoryOptional.get();
-            investmentHistory.setInitialAmount(investmentDetails.getInitialAmount());
-            investmentHistory.setInterestRate(investmentDetails.getInterestRate());
-            investmentHistory.setFinalAmount(investmentDetails.getFinalAmount());
-            investmentHistory.setCurrency(investmentDetails.getCurrency());
-            investmentHistory.setInvestor(investmentDetails.getInvestor());
-
-            return new ResponseEntity<>(investmentHistory, HttpStatus.OK);
-        }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<InvestmentHistory> updateInvestmentHistory(@PathVariable Long id, @RequestBody InvestmentHistory investmentHistoryDetails) {
+        InvestmentHistory updatedInvestmentHistory = investmentHistoryService.updateInvestmentHistory(id, investmentHistoryDetails);
+        return new ResponseEntity<>(updatedInvestmentHistory, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<InvestmentHistory> deleteInvestmentHistory(@PathVariable Long id){
-        if(investmentHistoryRepository.existsById(id)){
-            investmentHistoryRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void> deleteInvestmentHistory(@PathVariable Long id) {
+        investmentHistoryService.deleteInvestmentHistory(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }

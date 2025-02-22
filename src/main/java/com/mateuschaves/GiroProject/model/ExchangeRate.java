@@ -3,6 +3,7 @@ package com.mateuschaves.GiroProject.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -13,8 +14,8 @@ public class ExchangeRate {
     private Long id;
 
     private Date date;
-    private float dailyVariation;
-    private float dailyRate;
+    private BigDecimal dailyVariation;
+    private BigDecimal dailyRate;
 
     @ManyToOne
     @JoinColumn(name = "currency_id", nullable = false)
@@ -39,19 +40,19 @@ public class ExchangeRate {
         this.date = date;
     }
 
-    public float getDailyVariation() {
+    public BigDecimal getDailyVariation() {
         return dailyVariation;
     }
 
-    public void setDailyVariation(float dailyVariation) {
+    public void setDailyVariation(BigDecimal dailyVariation) {
         this.dailyVariation = dailyVariation;
     }
 
-    public float getDailyRate() {
+    public BigDecimal getDailyRate() {
         return dailyRate;
     }
 
-    public void setDailyRate(float dailyRate) {
+    public void setDailyRate(BigDecimal dailyRate) {
         this.dailyRate = dailyRate;
     }
 
@@ -63,7 +64,7 @@ public class ExchangeRate {
         this.currency = currency;
     }
 
-    public ExchangeRate(Currency currency, float dailyRate, float dailyVariation, Date date) {
+    public ExchangeRate(Currency currency, BigDecimal dailyRate, BigDecimal dailyVariation, Date date) {
         this.currency = currency;
         this.dailyRate = dailyRate;
         this.dailyVariation = dailyVariation;
