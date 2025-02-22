@@ -25,7 +25,7 @@ public class InvestorController {
         return ResponseEntity.ok(investorService.getAllInvestors());
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<Investor>getInvestorById(@PathVariable Long id){
         return ResponseEntity.ok(investorService.getInvestorById(id));
     }
@@ -39,7 +39,6 @@ public class InvestorController {
     public ResponseEntity<Investor>updateInvestor(@PathVariable Long id, @RequestBody Investor investor){
         return ResponseEntity.ok(investorService.updateInvestor(id, investor));
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>deleteInvestor(@PathVariable Long id) {
