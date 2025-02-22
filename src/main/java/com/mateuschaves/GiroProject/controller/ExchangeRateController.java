@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@RestController
 @RequestMapping("/api/exchange-rates")
 public class ExchangeRateController {
 
@@ -40,13 +40,13 @@ public class ExchangeRateController {
     }
 
 
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ExchangeRate> updateExchangeRate(@PathVariable Long id, @RequestBody ExchangeRate exchangeRateDetails){
         ExchangeRate updatedExchangeRate = exchangeRateService.updateExchangeRate(id, exchangeRateDetails);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     private ResponseEntity<Void> deleteExchangeRate(@PathVariable Long id) {
         exchangeRateService.deletarExnchegeRate(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
