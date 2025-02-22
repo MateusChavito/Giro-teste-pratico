@@ -49,5 +49,5 @@ public class CurrencyController {
         currencyService.deleteCurrency(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    
+
 }

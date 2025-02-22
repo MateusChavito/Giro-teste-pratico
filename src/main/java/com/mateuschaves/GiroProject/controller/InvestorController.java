@@ -46,7 +46,7 @@ public class InvestorController {
         investorService.deleteInvestor(id);
         return ResponseEntity.noContent().build();
 
-
     }
+
 
 }
