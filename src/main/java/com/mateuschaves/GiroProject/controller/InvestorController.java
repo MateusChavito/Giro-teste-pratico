@@ -2,7 +2,7 @@ package com.mateuschaves.GiroProject.controller;
 
 import com.mateuschaves.GiroProject.model.Investor;
 import com.mateuschaves.GiroProject.repository.InvestorRepository;
-import org.hibernate.query.NativeQuery;
+import com.mateuschaves.GiroProject.service.InvestorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,54 +11,42 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/investors")
+@RequestMapping("/api/investors")
 public class InvestorController {
 
-    private final InvestorRepository investorRepository;
+    private final InvestorService investorService;
 
-    public InvestorController(InvestorRepository investorRepository) {
-        this.investorRepository = investorRepository;
+    public InvestorController(InvestorService investorService) {
+        this.investorService = investorService;
     }
 
     @GetMapping
-    public List<Investor> getAllInvestors(){
-        return investorRepository.findAll();
+    public ResponseEntity<List<Investor>> getAllInvestors() {
+        return ResponseEntity.ok(investorService.getAllInvestors());
+    }
+
+    @GetMapping
+    public ResponseEntity<Investor>getInvestorById(@PathVariable Long id){
+        return ResponseEntity.ok(investorService.getInvestorById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Investor> createInvestor(@RequestBody Investor investor){
-        if(investorRepository.existsByEmail(investor.getEmail())){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Investor savedInvestor = investorRepository.save(investor);
-        return new ResponseEntity<>(savedInvestor.HttpStatus.CREATED);
+    public ResponseEntity<Investor> createInvestor(@RequestBody Investor investor) {
+        return ResponseEntity.status(201).body(investorService.createInvestor(investor));
     }
-
 
     @PutMapping("/{id}")
-    public ResponseEntity<Investor>updateInvestor(@PathVariable Long id, @RequestBody Investor investorDetails){
-        Optional<Investor> investorOptional = investorRepository.findById(id);
-        if(investorOptional.isPresent()){
-            Investor investor = investorOptional.get();
-            investor.setName(investorDetails.getName());
-            investor.setEmail(investorDetails.getEmail());
-            investorRepository.save(investor);
-
-            return new ResponseEntity<>(investor, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Investor>updateInvestor(@PathVariable Long id, @RequestBody Investor investor){
+        return ResponseEntity.ok(investorService.updateInvestor(id, investor));
     }
+
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>deleteInvestor(@PathVariable Long id){
-        if(investorRepository.existsById(id)){
-            investorRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void>deleteInvestor(@PathVariable Long id) {
+        investorService.deleteInvestor(id);
+        return ResponseEntity.noContent().build();
+
+
     }
-
-
-
 
 }
