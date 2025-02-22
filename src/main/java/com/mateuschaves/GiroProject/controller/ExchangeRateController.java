@@ -33,21 +33,20 @@ public class ExchangeRateController {
         return new ResponseEntity<>(exchangeRate, HttpStatus.OK);
     }
 
-
     @PostMapping
     public ResponseEntity<ExchangeRate> createExchangeRate(@RequestBody ExchangeRate exchangeRate) {
         ExchangeRate CreatedExchangeRate = exchangeRateService.createExchangeRate(exchangeRate);
-        return new ResponseEntity<>(exchangeRate, HttpStatus.CREATED);
+        return new ResponseEntity<>(CreatedExchangeRate, HttpStatus.CREATED);
     }
 
 
-    @PutMapping("{id}")
+    @PutMapping("{/id}")
     public ResponseEntity<ExchangeRate> updateExchangeRate(@PathVariable Long id, @RequestBody ExchangeRate exchangeRateDetails){
         ExchangeRate updatedExchangeRate = exchangeRateService.updateExchangeRate(id, exchangeRateDetails);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping
+    @DeleteMapping("{/id}")
     private ResponseEntity<Void> deleteExchangeRate(@PathVariable Long id) {
         exchangeRateService.deletarExnchegeRate(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
