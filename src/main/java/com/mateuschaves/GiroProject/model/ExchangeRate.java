@@ -1,6 +1,8 @@
 package com.mateuschaves.GiroProject.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -13,12 +15,14 @@ public class ExchangeRate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date date;
     private BigDecimal dailyVariation;
     private BigDecimal dailyRate;
 
     @ManyToOne
     @JoinColumn(name = "currency_id", nullable = false)
+    @JsonIgnoreProperties({"name", "type"})
     private Currency currency;
 
     public ExchangeRate() {
