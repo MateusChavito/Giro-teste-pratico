@@ -21,10 +21,10 @@ public class ExchangeRateController {
         this.exchangeRateService = exchangeRateService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<ExchangeRate>>getAllExchangeRates(){
-        List<ExchangeRate> exchangeRates = exchangeRateService.getALlExchangeRates();
-        return new ResponseEntity<>(exchangeRates, HttpStatus.OK);
+    @GetMapping("/recent")
+    public ResponseEntity<List<ExchangeRate>> getRecentExchangeRates() {
+        List<ExchangeRate> recentRates = exchangeRateService.getRecentExchangeRates();
+        return ResponseEntity.ok(recentRates);
     }
 
     @GetMapping("/{id}")

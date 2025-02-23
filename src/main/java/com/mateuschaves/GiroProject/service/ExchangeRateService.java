@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,9 +19,11 @@ public class ExchangeRateService {
         this.exchangeRateRepository = exchangeRateRepository;
     }
 
-    public List<ExchangeRate>getALlExchangeRates(){
-        return exchangeRateRepository.findAll();
+    public List<ExchangeRate> getRecentExchangeRates() {
+        Date sevenDaysAgo = new Date(System.currentTimeMillis() - 7L * 24L * 60L * 60L * 1000L); // 7 dias atrás
+        return exchangeRateRepository.findRecentExchangeRates(sevenDaysAgo);  // Assumindo que a query foi feita no repo
     }
+
 
     public ExchangeRate getExchangeRateByID(Long id){
         return exchangeRateRepository.findById(id)
