@@ -36,7 +36,7 @@ public class ExchangeRateService {
 
     public ExchangeRate updateExchangeRate(Long id, ExchangeRate exchangeRateDetails){
         ExchangeRate exchangeRate = getExchangeRateByID(id);
-        exchangeRate.setDate(exchangeRateDetails.getDate());
+        exchangeRate.setDate(new Date());
         exchangeRate.setDailyRate(exchangeRateDetails.getDailyRate());
         exchangeRate.setDailyVariation(exchangeRateDetails.getDailyVariation());
         exchangeRate.setCurrency(exchangeRateDetails.getCurrency());

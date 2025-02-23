@@ -43,7 +43,7 @@ public class ExchangeRateController {
     @PutMapping("/{id}")
     public ResponseEntity<ExchangeRate> updateExchangeRate(@PathVariable Long id, @RequestBody ExchangeRate exchangeRateDetails){
         ExchangeRate updatedExchangeRate = exchangeRateService.updateExchangeRate(id, exchangeRateDetails);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(updatedExchangeRate, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
