@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/investment-history")
+@RequestMapping("/api/investments")
 public class InvestmentHistoryController {
 
     private final InvestmentHistoryService investmentHistoryService;
@@ -22,20 +22,14 @@ public class InvestmentHistoryController {
     }
 
     @PostMapping
-    public ResponseEntity<InvestmentHistory> createInvestmentHistory(@RequestBody InvestmentHistory investmentHistory) {
-        InvestmentHistory createdInvestmentHistory = investmentHistoryService.createInvestmentHistory(investmentHistory);
-        return new ResponseEntity<>(createdInvestmentHistory, HttpStatus.CREATED);
+    public ResponseEntity<InvestmentHistory> createInvestment(@RequestBody InvestmentHistory investment) {
+        InvestmentHistory createdInvestment = investmentHistoryService.createInvestment(investment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdInvestment);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<InvestmentHistory> updateInvestmentHistory(@PathVariable Long id, @RequestBody InvestmentHistory investmentHistoryDetails) {
-        InvestmentHistory updatedInvestmentHistory = investmentHistoryService.updateInvestmentHistory(id, investmentHistoryDetails);
-        return new ResponseEntity<>(updatedInvestmentHistory, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteInvestmentHistory(@PathVariable Long id) {
-        investmentHistoryService.deleteInvestmentHistory(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @GetMapping("/investor/{investorId}")
+    public ResponseEntity<List<InvestmentHistory>> getInvestmentsByInvestor(@PathVariable Long investorId) {
+        List<InvestmentHistory> investments = investmentHistoryService.getInvestmentsByInvestor(investorId);
+        return ResponseEntity.ok(investments);
     }
 }

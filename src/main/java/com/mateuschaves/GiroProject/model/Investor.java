@@ -1,9 +1,9 @@
 package com.mateuschaves.GiroProject.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Investor {
@@ -14,6 +14,10 @@ public class Investor {
 
     private String name;
     private String email;
+
+    @OneToMany(mappedBy = "investor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("investor")
+    private List<InvestmentHistory> investments;
 
     public Investor() {
     }
@@ -42,8 +46,17 @@ public class Investor {
         this.email = email;
     }
 
-    public Investor(String name, String email) {
+    public List<InvestmentHistory> getInvestments() {
+        return investments;
+    }
+
+    public void setInvestments(List<InvestmentHistory> investments) {
+        this.investments = investments;
+    }
+
+    public Investor(String name, String email, List<InvestmentHistory> investments) {
         this.name = name;
         this.email = email;
+        this.investments = investments;
     }
 }

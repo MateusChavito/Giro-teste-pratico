@@ -4,13 +4,13 @@ import com.mateuschaves.GiroProject.model.InvestmentHistory;
 import com.mateuschaves.GiroProject.repository.InvestmentHistoryRepository;
 import com.mateuschaves.GiroProject.repository.CurrencyRepository;
 import com.mateuschaves.GiroProject.repository.InvestorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 @Service
 public class InvestmentHistoryService {
@@ -29,46 +29,25 @@ public class InvestmentHistoryService {
 
     private BigDecimal calculateFinalAmount(BigDecimal initialAmount, int months, BigDecimal interestRate) {
         BigDecimal rate = interestRate.divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
-        BigDecimal finalAmount = initialAmount.multiply(BigDecimal.ONE.add(rate).pow(months));
-        return finalAmount.setScale(2, RoundingMode.HALF_UP);
+        return initialAmount.multiply(BigDecimal.ONE.add(rate).pow(months)).setScale(2, RoundingMode.HALF_UP);
     }
 
-    public InvestmentHistory createInvestmentHistory(InvestmentHistory investmentHistory) {
-
-        if (!investorRepository.existsById(investmentHistory.getInvestor().getId())) {
+    public InvestmentHistory createInvestment(InvestmentHistory investment) {
+        if (!investorRepository.existsById(investment.getInvestor().getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Investidor não encontrado");
         }
-        if (!currencyRepository.existsById(investmentHistory.getCurrency().getId())) {
+        if (!currencyRepository.existsById(investment.getCurrency().getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Moeda não encontrada");
         }
 
-
-        BigDecimal finalAmount = calculateFinalAmount(investmentHistory.getInitialAmount(),
-                investmentHistory.getMonths(), investmentHistory.getInterestRate());
-
-        investmentHistory.setFinalAmount(finalAmount);
-
-        return investmentHistoryRepository.save(investmentHistory);
+        investment.setFinalAmount(calculateFinalAmount(investment.getInitialAmount(), investment.getMonths(), investment.getInterestRate()));
+        return investmentHistoryRepository.save(investment);
     }
 
-    public InvestmentHistory updateInvestmentHistory(Long id, InvestmentHistory investmentHistoryDetails) {
-        InvestmentHistory existingInvestmentHistory = investmentHistoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "O Histórico de investimento não foi encontrado."));
-
-        existingInvestmentHistory.setInitialAmount(investmentHistoryDetails.getInitialAmount());
-        existingInvestmentHistory.setMonths(investmentHistoryDetails.getMonths());
-        existingInvestmentHistory.setInterestRate(investmentHistoryDetails.getInterestRate());
-
-        BigDecimal finalAmount = calculateFinalAmount(existingInvestmentHistory.getInitialAmount(),
-                existingInvestmentHistory.getMonths(), existingInvestmentHistory.getInterestRate());
-        existingInvestmentHistory.setFinalAmount(finalAmount);
-
-        return investmentHistoryRepository.save(existingInvestmentHistory);
-    }
-
-    public void deleteInvestmentHistory(Long id) {
-        InvestmentHistory existingInvestmentHistory = investmentHistoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "O Histórico de investimento não foi encontrado!"));
-        investmentHistoryRepository.delete(existingInvestmentHistory);
+    public List<InvestmentHistory> getInvestmentsByInvestor(Long investorId) {
+        if (!investorRepository.existsById(investorId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Investidor não encontrado");
+        }
+        return investmentHistoryRepository.findByInvestorId(investorId);
     }
 }
