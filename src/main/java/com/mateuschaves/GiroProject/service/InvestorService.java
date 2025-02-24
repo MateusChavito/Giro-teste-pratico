@@ -1,5 +1,6 @@
 package com.mateuschaves.GiroProject.service;
 
+import com.mateuschaves.GiroProject.dto.InvestorDTO;
 import com.mateuschaves.GiroProject.model.Investor;
 import com.mateuschaves.GiroProject.repository.InvestorRepository;
 import org.springframework.http.HttpStatus;
@@ -26,13 +27,6 @@ public class InvestorService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Investidor não foi encontrado!"));
     }
 
-    public Investor createInvestor(Investor investor){
-        if(investorRepository.existsByEmail(investor.getEmail())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "E-mail já está cadastrado!");
-        }
-        return  investorRepository.save(investor);
-    }
-
     public Investor updateInvestor(Long id, Investor investorDetails){
         Investor investor = getInvestorById(id);
         investor.setName(investorDetails.getName());
@@ -45,7 +39,18 @@ public class InvestorService {
         investorRepository.delete(investor);
     }
 
+    public InvestorDTO createInvestor(InvestorDTO investorDTO) {
+        if (investorRepository.existsByEmail(investorDTO.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "E-mail já está cadastrado!");
+        }
 
+        Investor investor = new Investor();
+        investor.setName(investorDTO.getName());
+        investor.setEmail(investorDTO.getEmail());
+        Investor savedInvestor = investorRepository.save(investor);
+
+        return new InvestorDTO(savedInvestor.getId(), savedInvestor.getName(), savedInvestor.getEmail());
+    }
 
 
 }

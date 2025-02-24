@@ -1,5 +1,6 @@
 package com.mateuschaves.GiroProject.controller;
 
+import com.mateuschaves.GiroProject.dto.InvestorDTO;
 import com.mateuschaves.GiroProject.model.Investor;
 import com.mateuschaves.GiroProject.repository.InvestorRepository;
 import com.mateuschaves.GiroProject.service.InvestorService;
@@ -31,8 +32,9 @@ public class InvestorController {
     }
 
     @PostMapping
-    public ResponseEntity<Investor> createInvestor(@RequestBody Investor investor) {
-        return ResponseEntity.status(201).body(investorService.createInvestor(investor));
+    public ResponseEntity<InvestorDTO> createInvestor(@RequestBody InvestorDTO investorDTO) {
+        InvestorDTO savedInvestorDTO = investorService.createInvestor(investorDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedInvestorDTO);
     }
 
     @PutMapping("/{id}")
