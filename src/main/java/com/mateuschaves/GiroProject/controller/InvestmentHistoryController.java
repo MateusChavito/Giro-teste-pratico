@@ -2,14 +2,13 @@ package com.mateuschaves.GiroProject.controller;
 
 
 import com.mateuschaves.GiroProject.model.InvestmentHistory;
-import com.mateuschaves.GiroProject.repository.InvestmentHistoryRepository;
 import com.mateuschaves.GiroProject.service.InvestmentHistoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/investments")

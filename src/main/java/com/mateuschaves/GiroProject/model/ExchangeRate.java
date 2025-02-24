@@ -2,7 +2,6 @@ package com.mateuschaves.GiroProject.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -22,7 +21,6 @@ public class ExchangeRate {
 
     @ManyToOne
     @JoinColumn(name = "currency_id", nullable = false)
-    @JsonIgnoreProperties({"name", "type"})
     private Currency currency;
 
     public ExchangeRate() {

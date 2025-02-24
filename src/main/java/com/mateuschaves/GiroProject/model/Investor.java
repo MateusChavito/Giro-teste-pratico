@@ -59,4 +59,13 @@ public class Investor {
         this.email = email;
         this.investments = investments;
     }
+
+    @Override
+    public String toString() {
+        return "Investor{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", investments=" + investments +
+                '}';
+    }
 }

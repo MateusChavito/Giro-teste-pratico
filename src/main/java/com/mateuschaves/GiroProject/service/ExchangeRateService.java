@@ -3,12 +3,13 @@ package com.mateuschaves.GiroProject.service;
 import com.mateuschaves.GiroProject.model.ExchangeRate;
 import com.mateuschaves.GiroProject.repository.ExchangeRateRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+
 
 @Service
 public class ExchangeRateService {
@@ -20,8 +21,8 @@ public class ExchangeRateService {
     }
 
     public List<ExchangeRate> getRecentExchangeRates() {
-        Date sevenDaysAgo = new Date(System.currentTimeMillis() - 7L * 24L * 60L * 60L * 1000L); // 7 dias atrás
-        return exchangeRateRepository.findRecentExchangeRates(sevenDaysAgo);  // Assumindo que a query foi feita no repo
+        Date sevenDaysAgo = new Date(System.currentTimeMillis() - 7L * 24L * 60L * 60L * 1000L);
+        return exchangeRateRepository.findRecentExchangeRates(sevenDaysAgo);
     }
 
 
@@ -48,5 +49,18 @@ public class ExchangeRateService {
         exchangeRateRepository.delete(exchangeRate);
     }
 
+    public void deleteOldExchangeRates() {
+        LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
+        java.sql.Date sqlDate = java.sql.Date.valueOf(thirtyDaysAgo.toString());
+
+        List<ExchangeRate> oldRates = exchangeRateRepository.findByDateBefore(sqlDate);
+
+        if (!oldRates.isEmpty()) {
+            exchangeRateRepository.deleteAll(oldRates);
+        }
+    }
+
 
 }
+
+

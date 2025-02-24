@@ -2,7 +2,6 @@ package com.mateuschaves.GiroProject.service;
 
 import com.mateuschaves.GiroProject.model.Investor;
 import com.mateuschaves.GiroProject.repository.InvestorRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

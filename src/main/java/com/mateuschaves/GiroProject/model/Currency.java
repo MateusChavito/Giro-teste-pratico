@@ -1,6 +1,7 @@
 package com.mateuschaves.GiroProject.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +13,9 @@ public class Currency {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String name;
+
     private String type;
 
     public Currency() {
@@ -45,5 +48,13 @@ public class Currency {
     public Currency( String name, String type) {
         this.name = name;
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Currency{" +
+                "type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

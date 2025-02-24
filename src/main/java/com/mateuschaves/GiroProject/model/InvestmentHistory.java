@@ -2,6 +2,7 @@ package com.mateuschaves.GiroProject.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -18,11 +19,11 @@ public class InvestmentHistory {
     private BigDecimal interestRate;
     private BigDecimal finalAmount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "currency_id", nullable = false)
     private Currency currency;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "investor_id", nullable = false)
     private Investor investor;
 

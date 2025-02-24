@@ -1,15 +1,12 @@
 package com.mateuschaves.GiroProject.controller;
 
 import com.mateuschaves.GiroProject.model.ExchangeRate;
-import com.mateuschaves.GiroProject.repository.ExchangeRateRepository;
 import com.mateuschaves.GiroProject.service.ExchangeRateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/exchange-rates")
@@ -52,16 +49,18 @@ public class ExchangeRateController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    @DeleteMapping("/old")
+    public ResponseEntity<String> deleteOldExchangeRates() {
+        exchangeRateService.deleteOldExchangeRates();
+        return ResponseEntity.ok("As Taxas de câmbio mais antigas que 30 dias foram removidas.");
+    }
 }
+
+
+
+
+
+
+
+
+
