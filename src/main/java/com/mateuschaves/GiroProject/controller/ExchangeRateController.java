@@ -1,7 +1,9 @@
 package com.mateuschaves.GiroProject.controller;
 
+import com.mateuschaves.GiroProject.dto.ExchangeRateDTO;
 import com.mateuschaves.GiroProject.model.ExchangeRate;
 import com.mateuschaves.GiroProject.service.ExchangeRateService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +33,11 @@ public class ExchangeRateController {
     }
 
     @PostMapping
-    public ResponseEntity<ExchangeRate> createExchangeRate(@RequestBody ExchangeRate exchangeRate) {
-        ExchangeRate CreatedExchangeRate = exchangeRateService.createExchangeRate(exchangeRate);
-        return new ResponseEntity<>(CreatedExchangeRate, HttpStatus.CREATED);
+    public ResponseEntity<ExchangeRateDTO> createExchangeRate(@RequestBody ExchangeRate exchangeRate) {
+        ExchangeRate createdExchangeRate = exchangeRateService.createExchangeRate(exchangeRate);
+        ExchangeRateDTO exchangeRateDTO = new ExchangeRateDTO(createdExchangeRate);
+        return new ResponseEntity<>(exchangeRateDTO, HttpStatus.CREATED);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<ExchangeRate> updateExchangeRate(@PathVariable Long id, @RequestBody ExchangeRate exchangeRateDetails){
