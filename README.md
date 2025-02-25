@@ -65,7 +65,10 @@ mvn spring-boot:run
 A aplicação será executada no endereço: http://localhost:8080.
 
 ```
-### Endpoints
+### Testando a API
+Com a aplicação em execução, você pode testar os endpoints da API com ferramentas como o Postman ou Insomnia. Abaixo estão os principais endpoints disponíveis:
+
+
 #Currency API
 - **GET /api/currencies**: Retorna a lista de todas as moedas.
 - **POST /api/currencies**: Cria uma nova moeda.
