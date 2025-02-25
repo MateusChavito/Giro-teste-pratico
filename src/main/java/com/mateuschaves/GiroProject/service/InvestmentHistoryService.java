@@ -32,6 +32,7 @@ public class InvestmentHistoryService {
         return initialAmount.multiply(BigDecimal.ONE.add(rate).pow(months)).setScale(2, RoundingMode.HALF_UP);
     }
 
+
     public InvestmentHistory createInvestment(InvestmentHistory investment) {
         if (!investorRepository.existsById(investment.getInvestor().getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Investidor não encontrado");
@@ -43,6 +44,7 @@ public class InvestmentHistoryService {
         investment.setFinalAmount(calculateFinalAmount(investment.getInitialAmount(), investment.getMonths(), investment.getInterestRate()));
         return investmentHistoryRepository.save(investment);
     }
+
 
     public List<InvestmentHistory> getInvestmentsByInvestor(Long investorId) {
         if (!investorRepository.existsById(investorId)) {
